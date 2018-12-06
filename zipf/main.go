@@ -1,4 +1,4 @@
-// package main tests out zipf. Try misc -v 50 -s 1.6 -num 100000 -max 1000 | hist  -b 100
+// package main tests out zipf. Try "zipf -v 50 -s 1.6 -num 100000 -max 1000 | hist  -b 100" (hist is from bashplotlib)
 package main
 
 import (
