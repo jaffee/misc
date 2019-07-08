@@ -28,6 +28,7 @@ func NewMain() *Main {
 }
 
 func (m *Main) Run() error {
+	log.Printf("%#v\n", m)
 	config := memberlist.DefaultWANConfig()
 	config.Name = m.Name
 	config.BindPort = m.Port
@@ -53,6 +54,9 @@ func (m *Main) Run() error {
 			defer wg.Done()
 			rnd := rand.New(rand.NewSource(rand.Int63()))
 			for j := uint64(0); j < m.Iterations; j++ {
+				if j%10000000 == 0 {
+					runtime.Gosched()
+				}
 				vals[idx] = vals[idx] ^ rnd.Int()
 			}
 		}(i)
