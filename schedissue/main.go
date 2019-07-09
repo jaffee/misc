@@ -35,7 +35,7 @@ func NewMain() *Main {
 		Concurrency: runtime.NumCPU(),
 		Iterations:  1 << 40,
 		HTTPCount:   1,
-		HTTPSleep:   time.Millisecond * 100,
+		HTTPSleep:   time.Millisecond * 400,
 	}
 }
 
@@ -44,11 +44,13 @@ func (m *Main) Run() error {
 		go func() {
 			for {
 				fmt.Printf("1")
-				resp, err := http.Get("http://google.com")
+				resp, err := http.Get("http://golang.org")
 				if err != nil {
 					log.Printf("making http request: %v", err)
+					time.Sleep(time.Second * 10)
 					continue
 				}
+				defer resp.Body.Close()
 				if resp.StatusCode != 200 {
 					log.Println(resp.StatusCode)
 				}
