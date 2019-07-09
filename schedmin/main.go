@@ -48,11 +48,13 @@ func main() {
 
 func netLoopBody() {
 	fmt.Printf("1")
-	resp, err := http.Get("http://google.com")
+	resp, err := http.Get("http://golang.org/")
 	if err != nil {
 		log.Printf("making http request: %v", err)
+		time.Sleep(time.Millisecond * 500)
 		return
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		log.Println(resp.StatusCode)
 	}
@@ -61,12 +63,11 @@ func netLoopBody() {
 	if err != nil {
 		log.Printf("err reading body: %v", err)
 	}
-	if len(bod) > 100000 {
+	if len(bod) > 400000 {
 		log.Println("huge response body: %d", len(bod))
 	}
 	fmt.Printf("3")
-	time.Sleep(time.Millisecond * 100)
-
+	time.Sleep(time.Millisecond * 300)
 }
 
 // does not reproduce the issue
