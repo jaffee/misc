@@ -18,6 +18,7 @@ type Main struct {
 	Seeds       []string `help:"seeds to join"`
 	Concurrency int      `help:"Number of goroutines to spawn."`
 	Iterations  uint64   `help:"Number of times each routine should loop."`
+	GoSched     bool     `help:"insert gosched calls into cpu loop"`
 }
 
 func NewMain() *Main {
@@ -54,7 +55,7 @@ func (m *Main) Run() error {
 			defer wg.Done()
 			rnd := rand.New(rand.NewSource(rand.Int63()))
 			for j := uint64(0); j < m.Iterations; j++ {
-				if j%10000000 == 0 {
+				if m.GoSched && j%10000000 == 0 {
 					runtime.Gosched()
 				}
 				vals[idx] = vals[idx] ^ rnd.Int()
